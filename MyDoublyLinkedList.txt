@@ -1,0 +1,154 @@
+template<class t>
+struct node
+{
+    t data;
+    node* next;
+    node* prev;
+    node(t d, node* n=0, node* p=0)
+    {
+        data = d;
+        next = n;
+        prev = p;
+    }
+};
+template<class t>
+class DoublyLinkedList
+{
+    node<t>* head;
+    node<t>* tail;
+public:
+    DoublyLinkedList()
+    {
+        head = tail = 0;
+    }
+
+    bool isEmpty()
+    {
+        return head == 0;
+    }
+    bool InsertAtEnd(t data)
+    {
+        if (isEmpty())
+        {
+            tail=head=new node<t>(data);
+            return true;
+        }
+        tail=tail->next=new node<t>(data,0,tail);
+        return true;
+
+    }
+    bool InsertAtBegin(t data)
+    {
+        if (isEmpty())
+        {
+            tail = head = new node<t>(data);
+            return true;
+        }
+        head=new node<t>(data, head);
+        return true;
+    }
+
+    bool DeleteBegin()
+    {
+        if (isEmpty())
+            return false;
+        node<t>* t = head;
+        head=t->next;
+        head->prev = 0;
+        delete t;
+        t = 0;
+        return true;
+
+    }
+
+    bool DeleteEnd()
+    {
+        if (isEmpty())
+            return false;
+        node<t>* t = tail;
+        tail = t->prev;
+        tail->next = 0;
+        delete t;
+        t = 0;
+        return true;
+
+    }
+
+    bool DeleteAtPos(int pos)
+    {
+        node<t>* current = head;
+        node<t>* temp;
+        if (pos < 0)
+            return false;
+        if (pos == 0)
+            return DeleteBegin();
+        for (int i = 0; i < pos && current != 0; i++, current = current->next);
+        if(current==0)
+            return false;
+        if (current == tail)
+            return DeleteEnd();
+        temp = current;
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+        delete temp;
+        return true;
+
+    }
+
+    bool InsertAtPos(int pos,t data)
+    {
+        node<t>* current = head;
+        if (pos < 0)
+            return false;
+        if (pos == 0)
+            return InsertAtBegin(data);
+        for (int i = 0; i < pos-1 && current != 0; i++, current = current->next);
+        if (current == 0)
+            return false;
+        if (current == tail)
+            return InsertAtEnd(data);
+        
+        current->next=current->next->prev=new node<t>(data,current->next,current);
+   
+        return true;
+    }
+
+    int find(t data)
+    {
+        node<t>* current = head;
+        int i = 0;
+        while (current != 0)
+        {
+            if (current->data == data)
+                return i;
+            current = current->next;
+            i++;
+        }
+        return -1;
+    }
+
+    int countOfElement(t data)
+    {
+        pair<t, int> ElementCount;
+        ElementCount=make_pair(data,0);
+        node<t>* c = head;
+        
+        while (c!=0)
+        {   
+            if (c->data == data)
+                ++ElementCount.second;
+            c = c->next;
+        }
+        return ElementCount.second;
+    }
+    void print()
+    {
+        node<t>* t = head;
+        while (t != 0)
+        {
+            cout << t->data << " ";
+            t = t->next;
+        }
+        cout << endl;
+    }
+};

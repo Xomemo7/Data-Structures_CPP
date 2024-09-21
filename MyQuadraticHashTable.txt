@@ -1,0 +1,129 @@
+class HashTable
+{
+    static const int emptySlot = -842150451;
+
+    int Size,Count;
+    int *arr;
+public:
+    HashTable(int S)
+    {
+        
+        Size = S;
+        Count = 0;
+        arr= new int[Size];
+    }
+
+    int getSize()
+    {
+        return Size;
+    }
+
+    int getCount()
+    {
+        return Count;
+    }
+
+    bool isFull()
+    {
+        return Size == Count;
+    }
+
+    bool isEmpty()
+    {
+        return Count==0;
+    }
+
+    int insert(int key)
+    {
+        int pos;
+        int i = 0;
+        if (isFull())
+            return -1;
+        while (true)
+        {
+            pos = (key + (i * i)) % getSize();
+            if(arr[pos]== emptySlot)
+            {
+                arr[pos] = key;
+                Count++;
+                break;
+            }
+            i++;
+        }
+    }
+
+    void show()
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            if (arr[i] != emptySlot)
+                cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+
+    void showPairsOfKeyIndex()
+    {
+        string s = "";
+        for (int i = 0; i < Size; i++)
+        {
+            if (arr[i] != emptySlot)
+            {
+                s = "(" + to_string(arr[i]) + "," + to_string(i) + ")";
+                cout << s << "  ";
+            }
+                
+        }
+        cout << endl;
+    }
+    int Find(int key)
+    {
+        int pos;
+        int i = 0;
+        if (isEmpty())
+            return -1;
+        while (true)
+        {
+            pos = (key + (i * i)) % getSize();
+            if (arr[pos] == emptySlot)
+                return -1;
+            if (arr[pos] == key)
+                return pos;
+            i++;
+        }
+    }
+
+    bool exists(int key)
+    {
+        int pos;
+        int i = 0;
+        if (isEmpty())
+            return false;
+        while (true)
+        {
+            pos = (key + (i * i)) % getSize();
+            if (arr[pos] == emptySlot)
+                return false;
+            if (arr[pos] == key)
+                return true;
+            i++;
+        }
+    }
+
+    bool remove(int key)
+    {
+        int pos = Find(key);
+        if ( pos== -1)
+            return false;
+        arr[pos] = emptySlot;
+        return true;
+
+    } 
+    void clear()
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            arr[i] = emptySlot;
+        }
+    }
+};

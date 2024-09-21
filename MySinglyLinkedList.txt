@@ -1,0 +1,130 @@
+struct node
+{
+    int data;
+    node* next;
+
+    node(int d,node*n=0)
+    {
+        data = d;
+        next = n;
+    }
+};
+
+class LinkedList
+{
+    node* head;
+    node* tail;
+
+public:
+    LinkedList()
+    {
+        head = tail = 0;
+    }
+
+    bool isEmpty()
+    {
+        return head == 0;
+    }
+    int getSize()
+    {
+        node* t = head;
+        int size = 0;
+        while (t != 0)
+        {
+            size++;
+            t = t->next;
+        }
+        return size;
+    }
+
+    void InsertAtBegin(int data)
+    {
+        if (isEmpty())
+        {
+            head = tail = new node(data);
+            return;
+        }
+        head=new node(data,head);
+    }
+    void InsertAtEnd(int data)
+    {
+        
+        if (isEmpty())
+        {
+            InsertAtBegin(data);
+            return;
+        }
+        
+        tail=tail->next = new node(data);
+
+    }
+
+    bool DeleteBegin()
+    {
+        node* t = head;
+        if (isEmpty())
+            return false;
+        head = head->next;
+        delete t;
+        t = 0;
+        return true;
+    }
+
+    bool DeleteEnd()
+    {
+        node* t = head;
+        node* temp = tail;
+        if (isEmpty())
+            return false;
+        while (t->next!=tail)
+        {
+            t = t->next;
+        }
+        t->next = 0;
+        tail = t;
+        t = 0;
+        delete temp;
+        temp = 0;
+        return true;
+    }
+
+    void print()
+    {
+        node* t = head;
+        while (t != 0)
+        {
+            cout << t->data << " ";
+            t = t->next;
+        }
+        cout << endl;
+    }
+
+    int find(int data)
+    {
+        node* t = head;
+        int i = 0;
+        if (!isEmpty())
+        {
+            while (t != 0)
+            {
+                if (t->data == data)
+                    return i;
+                t = t->next;
+                i++;
+            }
+
+
+        }
+        return -1;
+    }
+
+    bool exists(int data)
+    {
+        if (isEmpty()||(find(data) == -1))
+            return false;
+        return true;
+
+    }
+
+
+};

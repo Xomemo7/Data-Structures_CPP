@@ -1,0 +1,78 @@
+struct node
+{
+    int data;
+    node* next;
+
+    node()
+    {
+        next = 0;
+    }
+
+    node(int d,node* n=0)
+    {
+        data = d;
+        next = n;
+
+    }
+};
+
+class LinkedQueue
+{
+    node* front, * rear;
+public:
+    LinkedQueue()
+    {
+        front = 0;
+        rear = 0;
+    }
+
+    bool isEmpty()
+    {
+        return front == 0;
+    }
+
+    void append(int e)
+    {
+        if (isEmpty())
+            front=rear=new node(e);
+        else
+            rear=rear->next=new node(e);
+    }
+
+    bool serve()
+    {
+        if (isEmpty())
+            return false;
+        node* t = front;
+        front = front->next;
+        delete t;
+        return true;
+    }
+
+    void print()
+    {
+
+        if (isEmpty())
+        {
+            cout << "Queue is empty" << endl;
+            return;
+        }
+        node* t = front;
+
+        while (t != 0)
+        {
+            cout << t->data << " ";
+            t = t->next;
+        }
+        cout << endl;
+  
+    }
+
+    bool retrieve(int& e)
+    {
+        if (isEmpty())
+            return false;
+        e = front->data;
+        return true;
+    }
+};

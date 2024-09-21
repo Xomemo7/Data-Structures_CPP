@@ -1,0 +1,97 @@
+const int Size = 10;
+class Queue
+{
+    int queue[Size];
+    int count,front,rear;
+public:
+    Queue()
+    {
+        front = 0;
+        count = 0;
+        rear = -1;
+    }
+    int getCount()
+    {
+        return count;
+    }
+    bool isEmpty()
+    {
+        return count == 0;
+    }
+
+    bool isFull()
+    {
+        return count == Size;
+    }
+    void MoveElementsToArry(int arr[])
+    {
+        int originalCount = count;
+        for (int i = 0; i < originalCount; i++)//puts elements in array and removes from queue
+        {
+            arr[i] = retrieve();
+            serve();
+        }
+        
+    }
+        
+    void print()
+    {
+        if (isEmpty())
+        {
+            cout << "Empty" << endl;
+            return;
+        }
+        for (int i = front; i !=rear; i=(i+1)%Size)
+        {
+            cout << queue[i] << " ";
+        }
+        cout << queue[rear] <<endl;
+    }
+    void CopyElementsFromArray(int arr[],int length)
+    {
+        for (int i = 0; i < length; i++)//returns elements to queue
+            append(arr[i]);
+    }
+    bool append(int e)
+    {
+        if (isFull())
+            return false;
+        rear = (rear + 1 == Size) ? 0 : rear + 1;
+        queue[rear] = e;
+        count++;
+        return true;
+    }
+   
+    bool serve()
+    {
+        if (isEmpty())
+            return false;
+        front = (front + 1 == Size) ?0 :front+1 ;
+        count--;
+        return true;
+    }
+
+    int retrieve()
+    {
+        if (!isEmpty())
+        {
+            return queue[front];
+        }
+    }
+
+
+    int search(int e)
+    {
+        if (isEmpty())
+            return -1;
+        for (int i = front; i != rear; i=(i+1)%Size)
+        {
+            if (queue[i] == e)
+                return i;
+        }
+        if (queue[rear] == e)
+            return rear;
+        return -1;
+    }
+    
+};

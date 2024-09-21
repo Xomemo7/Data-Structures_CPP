@@ -1,0 +1,252 @@
+struct node
+{
+	int data;
+	node* left;
+	node* right;
+
+	node(int d, node* l = 0, node* r = 0)
+	{
+		data = d;
+		left = l;
+		right = r;
+	}
+};
+
+class BST
+{
+	
+	node* root;
+
+	bool _add(int el, node*& r)
+	{
+		if (r == 0)
+		{
+			r = new node(el);
+			
+			return true;
+		}
+		if (el < r->data)
+		{
+			return _add(el, r->left);
+		}
+		if (el > r->data)
+		{
+			return _add(el, r->right);
+		}
+
+		return false;
+	}
+	
+	void _pre(node*r)
+	{
+		if (r == 0)
+		{
+			return;
+		}
+		cout << r->data<<" ";
+		_pre(r->left);
+		_pre(r->right);
+		
+	}
+	int _length(node*r)
+	{
+		if (r == 0)
+			return 0;
+		return 1 + _length(r->left) + _length(r->right);
+	}
+	
+
+	void _post(node* r)
+	{
+		if (r == 0)
+		{
+			return;
+		}
+		_post(r->left);
+		_post(r->right);
+		cout << r->data << " ";
+	
+	}
+
+	void  _in(node* r)
+	{
+		if (r == 0)
+		{
+			return;
+		}
+		_in(r->left);
+		cout << r->data << " ";
+		_in(r->right);
+		
+
+	}
+
+	int _height(node* r)
+	{
+		if (r == 0)
+		{
+			return -1;
+		}
+
+		int lh = _height(r->left);
+		int rh = _height(r->right);
+
+		if (lh > rh)
+		{
+			return lh + 1;
+		}
+		return rh + 1;
+
+
+	}
+
+	bool _search(int el,node *r)
+	{
+		if (r == 0)
+			return false;
+		if (r->data == el)
+			return true;
+		if (el < r->data)
+			return _search(el, r->left);
+		if (el > r->data)
+			return _search(el, r->right);
+
+		
+	}
+
+	void _deleteTree(node* &r)
+	{
+		if (r != 0)
+		{
+			_deleteTree(r->left);
+			_deleteTree(r->right);
+			delete r;
+			r = 0;
+		}
+	}
+
+
+	void _copyTree(node* &r, node* other)
+	{
+		if (other == 0)
+			r = 0;
+		else
+		{
+			r = new node(other->data);
+			_copyTree(r->left, other->left);
+			_copyTree(r->right, other->right);
+		}
+
+	}
+
+	int _findMin(node* r)
+	{
+		if (r == 0) {
+			return -1; 
+		}
+		if (r->left != 0) {
+			return _findMin(r->left);
+		}
+		return r->data;
+			
+		
+	}
+	int _findMax(node* r)
+	{
+
+		if (r == 0) {
+			return -1;
+		}
+		if (r->right != 0) {
+			return _findMax(r->right);
+		}
+		return r->data;
+
+	}
+
+	int _evenSum(node* r, int Sum = 0) {
+		if (!r) {
+			return Sum;
+		}
+
+		if (r->data % 2 == 0) {
+			Sum += r->data;
+		}
+
+		Sum = _evenSum(r->left, Sum);
+		Sum = _evenSum(r->right, Sum);
+
+		return Sum;
+	}
+public:
+
+	BST()
+	{
+		root = 0;
+		
+	}
+
+	int evenSum()
+	{
+		return _evenSum(root);
+	}
+	int length()
+	{
+		return _length(root);
+	}
+
+	bool add(int el)
+	{
+		return _add(el, root);
+	}
+
+	void pre()
+	{
+		_pre(root);
+	}
+
+
+	void post()
+	{
+		_post(root);
+	}
+
+	void in()
+	{
+		_in(root);
+	}
+
+	int height()
+	{
+		return _height(root);
+	}
+
+	bool search(int el)
+	{
+		return _search(el, root);
+
+	}
+
+	void deleteTree()
+	{
+		_deleteTree(root);
+	}
+
+	void copyTree(BST &o)
+	{
+		if (o.root == 0)
+			root = 0;
+		else
+			_copyTree(root,o.root);
+	}
+
+	int findMin()
+	{
+		return _findMin(root);
+	}
+
+	int findMax()
+	{
+		return _findMax(root);
+	}
+};
